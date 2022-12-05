@@ -1021,20 +1021,21 @@ function getRange(stringRange) {
 
 let sum = 0;
 
+function doesOverlap(range1, range2) {
+  let overlap = false;
+  range1.forEach((el) => {
+    if (range2.indexOf(el) !== -1) {
+      overlap = true;
+    }
+  });
+  return overlap;
+}
+
 input.forEach((el, i) => {
   range1 = getRange(el[0]);
   range2 = getRange(el[1]);
 
-  if (
-    range1[0] <= range2[0] &&
-    range1[range1.length - 1] >= range2[range2.length - 1]
-  ) {
-    console.log(i, range1, range2, "Added");
-    sum++;
-  } else if (
-    range2[0] <= range1[0] &&
-    range2[range2.length - 1] >= range1[range1.length - 1]
-  ) {
+  if (doesOverlap(range1, range2)) {
     console.log(i, range1, range2, "Added");
     sum++;
   } else {
