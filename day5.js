@@ -11,31 +11,7 @@ let initialStack = `
 
 initialStack = initialStack.split("\n");
 
-stacks = [];
-for (let i = 0; i < 9; i++) {
-  stacks.push([]);
-}
-
-for (let i = 0; i < initialStack.length - 1; i++) {
-  for (let j = 0; j < 9; j++) {
-    let index = j * 4 + 1;
-    if (initialStack[i][index] !== " ") {
-      stacks[j].unshift(initialStack[i][index]);
-    }
-  }
-}
-
-stacks.forEach((el) => {
-  if (el.indexOf(undefined) !== -1) {
-    el.splice(-1, 1);
-  }
-});
-
-stacks[stacks.length - 1].splice(-1, 1);
-console.log(stacks);
-
-let instructions = `
-move 3 from 2 to 5
+let instructions = `move 3 from 2 to 5
 move 2 from 9 to 6
 move 4 from 7 to 1
 move 7 from 3 to 4
@@ -538,8 +514,44 @@ move 9 from 6 to 7
 move 1 from 2 to 4
 move 1 from 9 to 5`;
 
+// initialStack = `
+//     [D]
+// [N] [C]
+// [Z] [M] [P]
+//  1   2   3 `;
+
+// initialStack = initialStack.split("\n");
+
+// instructions = `move 1 from 2 to 1
+// move 3 from 1 to 3
+// move 2 from 2 to 1
+// move 1 from 1 to 2`;
+
+stacks = [];
+for (let i = 0; i < 9; i++) {
+  stacks.push([]);
+}
+
+for (let i = 0; i < initialStack.length - 1; i++) {
+  for (let j = 0; j < 9; j++) {
+    let index = j * 4 + 1;
+    if (initialStack[i][index] !== " ") {
+      stacks[j].unshift(initialStack[i][index]);
+    }
+  }
+}
+
+stacks.forEach((el) => {
+  if (el.indexOf(undefined) !== -1) {
+    el.splice(-1, 1);
+  }
+});
+
+// stacks[stacks.length - 1].splice(-1, 1);
+
 instructions = instructions.split("\n");
 
+console.log(stacks);
 instructions.forEach((el, i) => {
   let start, end, amount;
   if (el.length === 19) {
@@ -551,10 +563,17 @@ instructions.forEach((el, i) => {
     start = parseInt(el[12]) - 1;
     end = parseInt(el[17]) - 1;
   }
+  console.log(el);
 
-  for (let i = 0; i < amount; i++) {
+  if (amount === 1) {
     stacks[end].push(stacks[start].pop());
+  } else {
+    moved = stacks[start].slice(-amount);
+    stacks[start] = stacks[start].slice(0, -amount);
+    moved.forEach((el) => stacks[end].push(el));
   }
+
+  console.log(stacks);
 });
 
 let res = "";
